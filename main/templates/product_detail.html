@@ -11,11 +11,17 @@
   | <b>Price:</b> Rp {{ product.price }}
 </p>
 
-{% if news.thumbnail %}
+{% if product.thumbnail %}
 <img src="{{ product.thumbnail }}" alt="Product thumbnail" width="300">
 <br /><br />
 {% endif %}
 
 <p>{{ product.description }}</p>
+
+{% if product.user %}
+    <p>Author: {{ product.user.username }}</p>
+{% else %}
+    <p>Author: Anonymous</p>
+{% endif %}
 
 {% endblock content %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Register - Football Shop</title>
+{% endblock meta %}
+
+{% block content %}
+<div>
+  <h1>Register Akun Football Shop</h1>
+
+  <form method="POST">
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+      <tr>
+        <td></td>
+        <td><input type="submit" value="Daftar" /></td>
+      </tr>
+    </table>
+  </form>
+
+  {% if messages %}
+    <ul>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <p>Sudah punya akun? <a href="{% url 'main:login' %}">Login di sini</a></p>
+</div>
+{% endblock content %}
