@@ -20,36 +20,46 @@
     </div>
 
     <!-- Info Section -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-      <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 text-center">
-        <p class="text-2xl font-bold">{{ product_list|length }}</p>
-        <p class="text-gray-300">Total Produk</p>
-      </div>
-      <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 text-center">
-        <p class="text-2xl font-bold">{{ product_list|dictsort:"-best_seller"|length }}</p>
-        <p class="text-gray-300">Best Seller</p>
-      </div>
-      <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 text-center">
-        <p class="text-2xl font-bold">{{ product_list|dictsort:"-created_at"|length }}</p>
-        <p class="text-gray-300">Produk Baru</p>
-      </div>
-    </div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+  <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 text-center">
+    <p class="text-2xl font-bold">{{ total_products }}</p>
+    <p class="text-gray-300">Total Produk</p>
+  </div>
+  <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 text-center">
+    <p class="text-2xl font-bold">{{ total_best }}</p>
+    <p class="text-gray-300">Best Seller</p>
+  </div>
+  <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 text-center">
+    <p class="text-2xl font-bold">{{ total_new }}</p>
+    <p class="text-gray-300">Produk Baru</p>
+  </div>
+</div>
+
 
     <!-- Filter -->
-    <div class="flex justify-center gap-4 mb-10">
-      <a href="?filter=all" 
-         class="px-5 py-2 rounded-lg border border-white/30 bg-white/10 hover:bg-white/20 transition">
-        Semua Produk
-      </a>
-      <a href="?filter=my" 
-         class="px-5 py-2 rounded-lg border border-white/30 bg-white/10 hover:bg-white/20 transition">
-        Produk Saya
-      </a>
-      <a href="{% url 'main:create_product' %}" 
-         class="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 transition">
-        + Tambah Produk
-      </a>
-    </div>
+<div class="flex flex-wrap justify-center gap-4 mb-10">
+  <a href="?filter=all" 
+     class="px-5 py-2 rounded-lg border border-white/30 bg-white/10 hover:bg-white/20 transition">
+    Semua Produk
+  </a>
+  <a href="?filter=my" 
+     class="px-5 py-2 rounded-lg border border-white/30 bg-white/10 hover:bg-white/20 transition">
+    Produk Saya
+  </a>
+  <a href="?filter=best" 
+     class="px-5 py-2 rounded-lg border border-yellow-400/50 bg-yellow-500/20 hover:bg-yellow-500/30 transition">
+    Best Seller
+  </a>
+  <a href="?filter=new" 
+     class="px-5 py-2 rounded-lg border border-green-400/50 bg-green-500/20 hover:bg-green-500/30 transition">
+    Produk Baru
+  </a>
+  <a href="{% url 'main:create_product' %}" 
+     class="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 transition">
+    + Tambah Produk
+  </a>
+</div>
+
 
     <!-- Product List -->
     {% if product_list %}

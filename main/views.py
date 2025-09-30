@@ -26,13 +26,18 @@ def show_main(request):
     else:
         product_list = Product.objects.all()
 
+    # Hitung total global dari database
+    week_ago = timezone.now() - datetime.timedelta(days=7)
+
     context = {
-        "npm": "2406351491",
-        "name": "Kalista Wiarta",
-        "class": "PBP F",
-        "product_list": product_list,
-        "last_login": request.COOKIES.get("last_login", "Never"),
-    }
+    "product_list": product_list,
+    "total_products": Product.objects.count(),
+    "total_best": Product.objects.filter(best_seller=True).count(),
+    "total_new": Product.objects.filter(
+        created_at__gte=timezone.now() - datetime.timedelta(days=7)
+    ).count(),
+    "last_login": request.COOKIES.get("last_login", "Never"),
+}
     return render(request, "home.html", context)
 
 
