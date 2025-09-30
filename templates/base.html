@@ -1,13 +1,69 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {% block meta %} {% endblock meta %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block meta %}{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  {% load static %}
 </head>
+<body class="font-sans bg-gradient-to-br from-black via-slate-900 to-red-900 min-h-screen">
 
-<body>
-    {% block content %} {% endblock content %}
+  <!-- NAVBAR -->
+  <nav class="fixed top-0 w-full bg-gray-900/50 backdrop-blur border-b border-white/10 z-50">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between text-white">
+      
+      <!-- Brand -->
+      <a href="{% url 'main:show_main' %}" class="font-bold text-lg tracking-wide">
+        Football Shop
+      </a>
+      
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex space-x-6 text-sm font-medium">
+        <a href="{% url 'main:show_main' %}" class="hover:text-blue-400 transition">Home</a>
+        {% if user.is_authenticated %}
+          <a href="{% url 'main:create_product' %}" class="hover:text-blue-400 transition">Tambah Produk</a>
+          <a href="{% url 'main:logout' %}" class="hover:text-red-400 transition">Logout</a>
+        {% else %}
+          <a href="{% url 'main:login' %}" class="hover:text-blue-400 transition">Login</a>
+          <a href="{% url 'main:register' %}" class="hover:text-blue-400 transition">Register</a>
+        {% endif %}
+      </div>
+
+      <!-- Mobile Button -->
+      <button id="menu-btn" class="md:hidden text-white focus:outline-none">
+        ☰
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="menu" class="hidden md:hidden px-6 pb-4 bg-gray-900/70 backdrop-blur border-t border-white/10 text-white space-y-3 text-sm">
+      <a href="{% url 'main:show_main' %}" class="block hover:text-blue-400 transition">Home</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'main:create_product' %}" class="block hover:text-blue-400 transition">Tambah Produk</a>
+        <a href="{% url 'main:logout' %}" class="block hover:text-red-400 transition">Logout</a>
+      {% else %}
+        <a href="{% url 'main:login' %}" class="block hover:text-blue-400 transition">Login</a>
+        <a href="{% url 'main:register' %}" class="block hover:text-blue-400 transition">Register</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="pt-20">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="mt-20 py-6 text-center text-sm text-gray-400 border-t border-white/10 bg-gray-900/40 backdrop-blur">
+    © 2025 Football Shop. All rights reserved.
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    document.getElementById("menu-btn").addEventListener("click", () => {
+      document.getElementById("menu").classList.toggle("hidden");
+    });
+  </script>
 </body>
 </html>

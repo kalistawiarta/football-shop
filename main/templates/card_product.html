@@ -1,0 +1,63 @@
+<div class="bg-transparent border border-white/20 backdrop-blur rounded-xl shadow-md hover:shadow-lg transition text-white flex flex-col h-full">
+  
+  <!-- Thumbnail -->
+  <div class="relative">
+    {% if product.thumbnail %}
+      <img src="{{ product.thumbnail }}" 
+           alt="{{ product.name }}" 
+           class="h-48 w-full object-cover rounded-t-xl border-b border-white/20">
+    {% else %}
+      <div class="h-48 w-full flex items-center justify-center text-gray-400 border-b border-white/20">
+        No Image
+      </div>
+    {% endif %}
+
+    <!-- Badge Best Seller -->
+    {% if product.best_seller %}
+      <span class="absolute top-3 left-3 bg-yellow-500/90 text-black text-xs font-bold px-2 py-1 rounded">
+        Best Seller
+      </span>
+    {% endif %}
+
+    <!-- Badge New -->
+    {% if product.is_new %}
+      <span class="absolute top-3 right-3 bg-green-500/90 text-white text-xs font-bold px-2 py-1 rounded">
+        New
+      </span>
+    {% endif %}
+  </div>
+  
+  <!-- Content -->
+  <div class="flex-1 p-5 flex flex-col">
+    <h2 class="text-lg font-semibold mb-1">{{ product.name }}</h2>
+    <p class="text-blue-400 font-bold mb-2">Rp {{ product.price }}</p>
+    <p class="text-gray-300 text-sm flex-1">{{ product.description|truncatewords:15 }}</p>
+
+    <!-- Extra Info -->
+    <div class="flex items-center justify-between text-xs text-gray-400 mt-3">
+      <span>Stok: {{ product.stock|default:"-" }}</span>
+      {% if product.user %}
+        <span>by {{ product.user.username }}</span>
+      {% endif %}
+    </div>
+    
+    <!-- Actions -->
+    <div class="mt-4 flex gap-2">
+      <a href="{% url 'main:show_product' product.id %}" 
+         class="flex-1 bg-blue-500 hover:bg-blue-600 text-center py-2 rounded-md text-sm transition">
+        Detail
+      </a>
+      <a href="{% url 'main:edit_product' product.id %}" 
+         class="flex-1 bg-gray-700 hover:bg-gray-600 text-center py-2 rounded-md text-sm transition">
+        Edit
+      </a>
+      <a href="{% url 'main:delete_product' product.id %}" 
+         onclick="return confirm('Yakin mau hapus produk ini?')" 
+         class="flex-1 bg-red-500 hover:bg-red-600 text-center py-2 rounded-md text-sm transition">
+        Delete
+      </a>
+    </div>
+  </div>
+</div>
+
+

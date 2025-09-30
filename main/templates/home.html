@@ -1,64 +1,79 @@
-<h1>Football Shop</h1>
+{% extends 'base.html' %}
+{% load static %}
 
-<h5>NPM: </h5>
-<p>{{ npm }}</p>
+{% block meta %}
+<title>Sportify - Home</title>
+{% endblock meta %}
 
-<h5>Name:</h5>
-<p>{{ name }}</p>
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-900 via-black to-red-900 text-white">
+  <div class="max-w-7xl mx-auto px-6 py-12">
 
-<h5>Class:</h5>
-<p>{{ class }}</p>
-
-<a href="{% url 'main:create_product' %}">
-  <button>+ Add Product</button>
-</a>
-
-<a href="{% url 'main:logout' %}">
-  <button>Logout</button>
-</a> 
-<h5>Sesi terakhir login: {{ last_login }}</h5>
-<hr>
-
-<a href="?filter=all">
-    <button type="button">All Products</button>
-</a>
-<a href="?filter=my">
-    <button type="button">My Products</button>
-</a> 
-
-{% if not product_list %}
-<p>Belum ada data produk.</p>
-{% else %}
-    {% for product in product_list %}
-    <div>
-        <h2>
-            <a href="{% url 'main:show_product' product.id %}">
-                {{ product.name }}
-            </a>
-        </h2>
-
-        <p>
-            <b>Kategori:</b> {{ product.category }}
-            {% if product.is_featured %} | <b>Featured</b>{% endif %}
-            | <b>Brand:</b> {{ product.brand }}
-            | <b>Stok:</b> {{ product.stock }}
-            | <b>Harga:</b> Rp {{ product.price }}
-        </p>
-
-        {% if product.thumbnail %}
-            <img src="{{ product.thumbnail }}" alt="{{ product.name }}" width="150" height="100">
-            <br />
-        {% endif %}
-
-        <p>{{ product.description|truncatewords:25 }}...</p>
-
-        <p>
-            <a href="{% url 'main:show_product' product.id %}">
-                <button>Detail</button>
-            </a>
-        </p>
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl sm:text-5xl font-extrabold text-white drop-shadow-lg">
+        Sportify
+      </h1>
+      <p class="mt-4 text-lg text-gray-300">
+        Temukan koleksi perlengkapan olahraga pilihan untuk gaya hidup sehat Anda.
+      </p>
     </div>
 
-    <hr>
-    {% endfor %}
-{% endif %}
+    <!-- Info Section -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 text-center">
+        <p class="text-2xl font-bold">{{ product_list|length }}</p>
+        <p class="text-gray-300">Total Produk</p>
+      </div>
+      <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 text-center">
+        <p class="text-2xl font-bold">{{ product_list|dictsort:"-best_seller"|length }}</p>
+        <p class="text-gray-300">Best Seller</p>
+      </div>
+      <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl p-6 text-center">
+        <p class="text-2xl font-bold">{{ product_list|dictsort:"-created_at"|length }}</p>
+        <p class="text-gray-300">Produk Baru</p>
+      </div>
+    </div>
+
+    <!-- Filter -->
+    <div class="flex justify-center gap-4 mb-10">
+      <a href="?filter=all" 
+         class="px-5 py-2 rounded-lg border border-white/30 bg-white/10 hover:bg-white/20 transition">
+        Semua Produk
+      </a>
+      <a href="?filter=my" 
+         class="px-5 py-2 rounded-lg border border-white/30 bg-white/10 hover:bg-white/20 transition">
+        Produk Saya
+      </a>
+      <a href="{% url 'main:create_product' %}" 
+         class="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 transition">
+        + Tambah Produk
+      </a>
+    </div>
+
+    <!-- Product List -->
+    {% if product_list %}
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for product in product_list %}
+          <div class="h-full">
+            {% include 'card_product.html' with product=product %}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <!-- No Product Section -->
+      <div class="flex flex-col items-center justify-center py-20">
+        <img src="{% static 'image/no-product.png' %}" alt="No Product" class="w-40 mb-6 opacity-80">
+        <p class="text-gray-400 text-lg">Belum ada produk yang terdaftar</p>
+      </div>
+    {% endif %}
+
+    <!-- Footer -->
+    <div class="text-center mt-16 text-gray-400 text-sm">
+      <p>Sportify © 2025 - All Rights Reserved</p>
+      <p class="mt-1">Last login: {{ last_login }}</p>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

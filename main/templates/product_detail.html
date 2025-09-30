@@ -1,27 +1,57 @@
 {% extends 'base.html' %}
+
+{% block meta %}
+<title>{{ product.name }} - Sportify</title>
+{% endblock meta %}
+
 {% block content %}
-<p><a href="{% url 'main:show_main' %}"><button>← Back to Product List</button></a></p>
+<div class="min-h-screen bg-gradient-to-br from-blue-900 via-black to-red-900 text-white px-6 py-12">
+  <div class="max-w-4xl mx-auto bg-white/10 backdrop-blur-lg border border-white/20 rounded-xl shadow-lg overflow-hidden">
+    
+    <!-- Product Image -->
+    {% if product.thumbnail %}
+      <img src="{{ product.thumbnail }}" 
+           alt="{{ product.name }}" 
+           class="w-full h-80 object-cover border-b border-white/20">
+    {% else %}
+      <div class="w-full h-80 flex items-center justify-center text-gray-400 border-b border-white/20">
+        No Image
+      </div>
+    {% endif %}
+    
+    <!-- Product Info -->
+    <div class="p-8">
+      <h1 class="text-3xl font-bold mb-3">{{ product.name }}</h1>
+      <p class="text-blue-400 text-xl font-semibold mb-4">Rp {{ product.price }}</p>
+      <p class="text-gray-300 leading-relaxed mb-6">{{ product.description }}</p>
 
-<h1>{{ product.name }}</h1>
-<p>
-  <b>{{ product.category }}</b>
-  {% if product.is_featured %} | <b>Featured</b>{% endif %}
-  | <b>Brand:</b> {{ product.brand }}
-  | <b>Stock:</b> {{ product.stock }}
-  | <b>Price:</b> Rp {{ product.price }}
-</p>
+      <!-- Extra Info -->
+      <div class="flex items-center justify-between text-sm text-gray-400 mb-6">
+        <span>Stok: {{ product.stock|default:"-" }}</span>
+        {% if product.user %}
+          <span>by {{ product.user.username }}</span>
+        {% endif %}
+      </div>
 
-{% if product.thumbnail %}
-<img src="{{ product.thumbnail }}" alt="Product thumbnail" width="300">
-<br /><br />
-{% endif %}
-
-<p>{{ product.description }}</p>
-
-{% if product.user %}
-    <p>Author: {{ product.user.username }}</p>
-{% else %}
-    <p>Author: Anonymous</p>
-{% endif %}
-
-{% endblock content %}
+      <!-- Action Buttons -->
+      <div class="flex gap-3">
+        <a href="{% url 'main:show_main' %}" 
+           class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-md transition">
+          Back
+        </a>
+        {% if user == product.user %}
+          <a href="{% url 'main:edit_product' product.id %}" 
+             class="px-6 py-3 bg-blue-500 hover:bg-blue-600 rounded-md transition">
+            Edit
+          </a>
+          <a href="{% url 'main:delete_product' product.id %}" 
+             onclick="return confirm('Yakin hapus produk ini?')" 
+             class="px-6 py-3 bg-red-500 hover:bg-red-600 rounded-md transition">
+            Delete
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
